@@ -10,64 +10,31 @@ import {
   Title,
 } from '@tremor/react';
 
-interface Data {
-  id: string;
-  name: string;
-  email: string;
-  github: string;
-}
+import { useAppSelector } from '../hooks/store';
+
+import { userAppActions } from '../hooks/useUsers';
 
 export function ListOrUser() {
-  const data: Data[] = [
-    {
-      id: '1',
-      name: 'Angel Garcia',
-      email: 'angel.garcia@gmail.com',
-      github: 'angelcgar',
-    },
-    {
-      id: '2',
-      name: 'Jon Mueller',
-      email: 'jon.mueller@gmail.com',
-      github: 'jonmuell',
-    },
-    {
-      id: '3',
-      name: 'Peter Federer',
-      email: 'peter.federer@gmail.com',
-      github: 'peterfederer',
-    },
-    {
-      id: '4',
-      name: 'Maxime Bujet',
-      email: 'maxime.bujet@gmail.com',
-      github: 'maximebujet',
-    },
-    {
-      id: '5',
-      name: 'Emma Nelly',
-      email: 'emma.nelly@gmail.com',
-      github: 'emmanuelnelly',
-    },
-  ];
+  const user = useAppSelector((state) => state.users);
+  const { removeUser } = userAppActions();
 
   return (
     <Card className="flex flex-col items-center justify-center gap-4 p-4">
       <Title>
-        Listado de Usuarios <Badge>{data.length}</Badge>
+        Listado de Usuarios <Badge>{user.length}</Badge>
       </Title>
       <Table>
         <TableHead>
           <TableRow>
-            <TableHeaderCell>Id</TableHeaderCell>
-            <TableHeaderCell>Nombre</TableHeaderCell>
-            <TableHeaderCell>Email</TableHeaderCell>
-            <TableHeaderCell>Acciones</TableHeaderCell>
+            <TableHeaderCell> Id </TableHeaderCell>
+            <TableHeaderCell> Nombre </TableHeaderCell>
+            <TableHeaderCell> Email </TableHeaderCell>
+            <TableHeaderCell> Acciones </TableHeaderCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {data.map((item) => (
+          {user.map((item) => (
             <TableRow key={item.name}>
               <TableCell>{item.id}</TableCell>
               <TableCell className="flex items-center gap-2">
@@ -97,8 +64,9 @@ export function ListOrUser() {
                     />
                   </svg>
                 </button>
-                <button type="button">
+                <button type="button" onClick={() => removeUser(item.id)}>
                   <svg
+                    aria-label="Remove element"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
