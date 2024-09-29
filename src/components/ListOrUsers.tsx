@@ -12,11 +12,11 @@ import {
 
 import { useAppSelector } from '../hooks/store';
 
-import { userAppActions } from '../hooks/useUsers';
+import { useUserActions } from '../hooks/useUsers';
 
 export function ListOrUser() {
   const user = useAppSelector((state) => state.users);
-  const { removeUser } = userAppActions();
+  const { removeUser } = useUserActions();
 
   return (
     <Card className="flex flex-col items-center justify-center gap-4 p-4">

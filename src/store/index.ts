@@ -11,6 +11,8 @@ const persistanceLocalStorageMiddleware: Middleware =
 const syncWithDatabaseMiddleware: Middleware =
   (store) => (next) => (action) => {
     const { type, payload } = action;
+    if (!type || !payload) throw new Error('Internal error');
+
     const previousState = store.getState() as RootState;
     next(action);
 
@@ -43,7 +45,10 @@ export const store = configureStore({
   reducer: {
     users: userReducer,
   },
-  middleware: [persistanceLocalStorageMiddleware, syncWithDatabaseMiddleware],
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware()
+      .concat(persistanceLocalStorageMiddleware)
+      .concat(syncWithDatabaseMiddleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
